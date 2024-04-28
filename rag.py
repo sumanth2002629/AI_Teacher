@@ -11,7 +11,9 @@ from langchain.memory import ConversationBufferMemory
 import streamlit as st
 import os
 import time
-import asr
+import backend.asr as asr
+import backend.text_to_pdf as text_to_pdf
+
 
 # first: pip install pysqlite3-binary
 # then in settings.py:
@@ -76,38 +78,40 @@ pdf_name = "transcript.pdf"
 if uploaded_file is not None:
     text = asr.aud_to_text(uploaded_file.name)
 
-    if not os.path.isfile("files/"+pdf_name):
-        with st.status("Analyzing your document..."):
+    
+    with st.status("Analyzing your document..."):
 
-            asr.whispertxt_to_pdf(text,"files/transcript.pdf")
+        asr.whispertxt_to_pdf(text,"files/transcript.pdf")
 
 
-            # bytes_data = uploaded_file.read()
-            # f = open("files/"+uploaded_file.name, "wb")
-            # f.write(bytes_data)
-            # f.close()
-            loader = PyPDFLoader("files/"+pdf_name)
-            data = loader.load()
-            # Initialize text splitter
-            text_splitter = RecursiveCharacterTextSplitter(
-                chunk_size=1500,
-                chunk_overlap=200,
-                length_function=len
-            )
-            all_splits = text_splitter.split_documents(data)
-            f=open("new.txt","w")
-            f.write(str(len(data))+str(len(all_splits)))
-            f.close()
-            # if data:
-            #     st.write("Data read successfully")
-            # else:
-            #     st.write("Datat not read")
-            # Create and persist the vector store
-            st.session_state.vectorstore = Chroma.from_documents(
-                documents=all_splits,
-                embedding=OllamaEmbeddings(model="llama3")
-            )
-            st.session_state.vectorstore.persist()
+        # bytes_data = uploaded_file.read()
+        # f = open("files/"+uploaded_file.name, "wb")
+        # f.write(bytes_data)
+        # f.close()
+        loader = PyPDFLoader("files/"+pdf_name)
+        data = loader.load()
+        # Initialize text splitter
+
+        
+        # text_splitter = RecursiveCharacterTextSplitter(
+        #     chunk_size=5000,
+        #     chunk_overlap=200,
+        #     length_function=len
+        # )
+        # all_splits = text_splitter.split_documents(data)
+        f=open("new.txt","w")
+        f.write(str(data))
+        f.close()
+        # if data:
+        #     st.write("Data read successfully")
+        # else:
+        #     st.write("Datat not read")
+        # Create and persist the vector store
+        st.session_state.vectorstore = Chroma.from_documents(
+            documents=data,
+            embedding=OllamaEmbeddings(model="llama3")
+        )
+        st.session_state.vectorstore.persist()
     # st.write(len(all_splits), len(data))
     st.session_state.retriever = st.session_state.vectorstore.as_retriever()
     # Initialize the QA chain
@@ -126,6 +130,8 @@ if uploaded_file is not None:
 
     # Chat input
     if user_input := st.chat_input("You:", key="user_input"):
+        print(user_input)
+        print(type(user_input))
         user_message = {"role": "user", "message": user_input}
         st.session_state.chat_history.append(user_message)
         with st.chat_message("user"):
@@ -135,16 +141,27 @@ if uploaded_file is not None:
                 response = st.session_state.qa_chain(user_input)
             message_placeholder = st.empty()
             full_response = ""
+            sentences = []
             for chunk in response['result'].split():
                 full_response += chunk + " "
                 time.sleep(0.05)
                 # Add a blinking cursor to simulate typing
                 message_placeholder.markdown(full_response + "▌")
+            
+            sentences.append(full_response)
+
             message_placeholder.markdown(full_response)
 
         chatbot_message = {"role": "assistant", "message": response['result']}
         st.session_state.chat_history.append(chatbot_message)
-
+        
+        text_to_pdf.write_list_to_pdf("notes.pdf", sentences)
 
 else:
     st.write("Please upload an audio file.")
+
+
+
+
+
+# You are an excellent teacher. The document given to you is a transcribed notes pdf of a lecture. Your job is to generate good structured notes from a pdf. The final output should be a structured notes pdf, these notes should have everything from the document given to you. These notes should be structured in such a way that the student can understand the topics easily. The document given to you has timestamps for each sentence as start and end. Your final output notes should have topicwise timestamps given as reference.

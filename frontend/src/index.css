@@ -1,0 +1,21 @@
+body {
+  margin: 0;
+  font-family: 'Audrey', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-image: url('../public/background.jpg'); /* URL to your image */
+  background-size: cover; 
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+}
+@font-face {
+  font-family: 'Audrey';
+  src: url('https://www.dropbox.com/s/bmy91kfeuryb6q3/Audrey%201.0.zip?e=2&file_subpath=%2FAudrey+1.0%2FAudrey-Normal.otf&st=noj23d5q&dl=0') format('truetype'); /* Replace with your Dropbox font file link */
+  /* Add more src declarations for different font file formats if necessary */
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}

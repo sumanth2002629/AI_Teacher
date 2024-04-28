@@ -1,6 +1,6 @@
 import torch
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
-import text_to_pdf
+import text_to_pdf as text_to_pdf
 
 
 def aud_to_text(aud_file):
@@ -49,10 +49,11 @@ def whispertxt_to_pdf(whistxt,file_name):
     sentences = final_text.split("\n")
 
     text_to_pdf.write_list_to_pdf(file_name,sentences)
+    # return final_text
 
 if __name__=="__main__":
-    text = aud_to_text("rec.wav")
-    whispertxt_to_pdf(text,"files/transcript.pdf")
+    text = aud_to_text("Cosmos.mp3")
+    print(whispertxt_to_pdf(text,"files/transcript.pdf"))
 
 
 
