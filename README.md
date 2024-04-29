@@ -6,13 +6,13 @@ To get started with this project, follow these steps:
 
    
 ```bash 
-git clone https://github.com/sumanth2002629/SportR.git
+git clone https://github.com/sumanth2002629/AI_Teacher.git
 ```
 
 3. Install the required dependencies for backend and frontend:
 
 ```bash
-cd SportR
+cd AI_Teacher
 cd ./backend && pip install Flask flask-cors reportlab transformers langchain
 cd ./frontend && npm install
 ```
