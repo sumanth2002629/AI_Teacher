@@ -13,13 +13,12 @@ git clone https://github.com/sumanth2002629/AI_Teacher.git
 
 ```bash
 cd AI_Teacher
-cd ./backend && pip install Flask flask-cors reportlab transformers langchain chromadb pypdf
+cd ./backend && pip install Flask flask-cors reportlab transformers langchain chromadb pypdf openai-whisper
 ```
-- Install ollama from its website.
+- Install ollama from [https://ollama.com/download](https://ollama.com/download).
 ```bash
 ollama pull llama3
 ```
-- Install Whisper
 
 4. Install the required dependencies for react frontend:
 
