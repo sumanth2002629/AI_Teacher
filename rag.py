@@ -1,3 +1,4 @@
+# This file is not a part of backend, this is just a sample demo chatbot using streamlit to work with RAG.
 from langchain.chains import RetrievalQA
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.callbacks.manager import CallbackManager
