@@ -9,15 +9,25 @@ To get started with this project, follow these steps:
 git clone https://github.com/sumanth2002629/AI_Teacher.git
 ```
 
-3. Install the required dependencies for backend and frontend:
+3. Install the required dependencies for python backend:
 
 ```bash
 cd AI_Teacher
-cd ./backend && pip install Flask flask-cors reportlab transformers langchain
+cd ./backend && pip install Flask flask-cors reportlab transformers langchain chromadb pypdf
+```
+- Install ollama from its website.
+```bash
+ollama pull llama3
+```
+- Install Whisper
+
+4. Install the required dependencies for react frontend:
+
+```bash
 cd ./frontend && npm install
 ```
 
-4. Start the backend server:
+5. Start the backend server:
 
 ```bash
 cd backend && python3 backend.py
