@@ -13,7 +13,7 @@ git clone https://github.com/sumanth2002629/SportR.git
 
 ```bash
 cd SportR
-cd ./backend && pip install Flask flask-cors
+cd ./backend && pip install Flask flask-cors reportlab transformers langchain
 cd ./frontend && npm install
 ```
 
